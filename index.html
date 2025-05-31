@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Science Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      padding: 20px;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .correct {
+      color: green;
+      font-weight: bold;
+    }
+    .wrong {
+      color: red;
+      font-weight: bold;
+    }
+    button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Science Quiz</h1>
+  <div id="quiz"></div>
+  <button onclick="showResult()">Submit Quiz</button>
+  <div id="result"></div>  <script>
+    const questions = [
+      {
+        q: "Which gas is the most abundant in Earth's crust?",
+        options: ["Oxygen", "Nitrogen", "Hydrogen"],
+        answer: "Nitrogen"
+      },
+      {
+        q: "Which is the chemical symbol of gold?",
+        options: ["Ag", "Gd", "Au"],
+        answer: "Au"
+      },
+      {
+        q: "Which planet is known as 'Red Planet'?",
+        options: ["Earth", "Mars", "Jupiter"],
+        answer: "Mars"
+      },
+      {
+        q: "Which vitamin is produced when human body is exposed to sunlight?",
+        options: ["Vitamin A", "Vitamin D", "Vitamin B12"],
+        answer: "Vitamin D"
+      },
+      {
+        q: "Which is the unit of electric current?",
+        options: ["Volt", "Ohm", "Ampere"],
+        answer: "Ampere"
+      },
+      {
+        q: "Which part of plants conduct photosynthesis?",
+        options: ["Stem", "Leaves", "Root"],
+        answer: "Leaves"
+      },
+      {
+        q: "Who is known as father of modern physics?",
+        options: ["Albert Einstein", "Isaac Newton", "Galileo"],
+        answer: "Albert Einstein"
+      },
+      {
+        q: "What is the boiling point of water?",
+        options: ["200°C", "100°C", "110°C"],
+        answer: "100°C"
+      },
+      {
+        q: "Which organ purifies human blood?",
+        options: ["Heart", "Liver", "Kidneys"],
+        answer: "Kidneys"
+      },
+      {
+        q: "Which of these is a non-metal?",
+        options: ["Sulphor", "Zinc", "Sodium"],
+        answer: "Sulphor"
+      }
+    ];
+
+    const quizDiv = document.getElementById("quiz");
+
+    questions.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.classList.add("question");
+      div.innerHTML = `
+        <p><strong>${index + 1}. ${item.q}</strong></p>
+        ${item.options.map(option => `
+          <label>
+            <input type="radio" name="q${index}" value="${option}" /> ${option}
+          </label><br>
+        `).join('')}
+      `;
+      quizDiv.appendChild(div);
+    });
+
+    function showResult() {
+      let mark = 0;
+      let correct = 0;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "<h2>Results:</h2>";
+
+      questions.forEach((item, index) => {
+        const options = document.getElementsByName(`q${index}`);
+        let selected = "";
+        options.forEach(opt => {
+          if (opt.checked) selected = opt.value;
+        });
+
+        const p = document.createElement("p");
+        if (selected === item.answer) {
+          p.innerHTML = `${index + 1}. Correct answer: <span class="correct">${item.answer}</span>`;
+          mark++;
+          correct++;
+        } else {
+          p.innerHTML = `${index + 1}. Wrong answer. Correct: <span class="correct">${item.answer}</span>, Your answer: <span class="wrong">${selected || 'No answer'}</span>`;
+        }
+        resultDiv.appendChild(p);
+      });
+
+      const wrong = questions.length - correct;
+      resultDiv.innerHTML += `<p><strong>Total Questions Attempted:</strong> ${questions.length}</p>`;
+      resultDiv.innerHTML += `<p><strong>Total Correct:</strong> ${correct}</p>`;
+      resultDiv.innerHTML += `<p><strong>Total Wrong:</strong> ${wrong}</p>`;
+      resultDiv.innerHTML += `<p><strong>Total Marks:</strong> ${mark}</p>`;
+    }
+  </script></body>
+  </html>
